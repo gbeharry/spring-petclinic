@@ -11,8 +11,7 @@ pipeline {
             steps {
                 script {
                     echo "Building the project..."
-                    sh 'mvn clean package'
-                }
+                    bat 'mvn clean package' 
             }
         }
 
@@ -20,12 +19,18 @@ pipeline {
             steps {
                 script {
                     echo "Running tests and generating JaCoCo report..."
-                    sh 'mvn test'
+                    bat 'mvn test' 
                 }
             }
             post {
                 always {
-                    jacoco(execPattern: '**/target/jacoco.exec', classPattern: '**/target/classes', sourcePattern: '**/src/main/java', inclusionPattern: '**/*.class', exclusionPattern: '')
+                    jacoco(
+                        execPattern: '**/target/jacoco.exec',
+                        classPattern: '**/target/classes',
+                        sourcePattern: '**/src/main/java',
+                        inclusionPattern: '**/*.class',
+                        exclusionPattern: ''
+                    )
                 }
             }
         }
