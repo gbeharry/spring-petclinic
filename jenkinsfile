@@ -1,0 +1,43 @@
+pipeline {
+    agent any
+
+    tools {
+        maven 'Maven 3'  // Ensure Maven is installed in Jenkins
+        jdk 'JDK 11'  // Ensure Java is installed in Jenkins
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                script {
+                    echo "Building the project..."
+                    sh 'mvn clean package'
+                }
+            }
+        }
+
+        stage('Run Tests & Generate JaCoCo Report') {
+            steps {
+                script {
+                    echo "Running tests and generating JaCoCo report..."
+                    sh 'mvn test'
+                }
+            }
+            post {
+                always {
+                    jacoco(execPattern: '**/target/jacoco.exec', classPattern: '**/target/classes', sourcePattern: '**/src/main/java', inclusionPattern: '**/*.class', exclusionPattern: '')
+                }
+            }
+        }
+
+        stage('Archive Artifacts') {
+            steps {
+                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+            }
+        }
+    }
+
+    triggers {
+        cron('H/3 * * * 4') // Runs every 3 minutes on Thursdays
+    }
+}
