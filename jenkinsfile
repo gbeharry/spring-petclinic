@@ -12,6 +12,7 @@ pipeline {
                 script {
                     echo "Building the project..."
                     bat 'mvn clean package' 
+                }
             }
         }
 
