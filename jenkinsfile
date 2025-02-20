@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven 3'  // Ensure Maven is installed in Jenkins
-        jdk 'JDK 11'  // Ensure Java is installed in Jenkins
+        maven 'Maven 3' 
+        jdk 'JDK 21' 
     }
 
     stages {
@@ -38,6 +38,6 @@ pipeline {
     }
 
     triggers {
-        cron('H/3 * * * 4') // Runs every 3 minutes on Thursdays
+        cron('H/5 * * * *) 
     }
 }
